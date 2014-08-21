@@ -1,0 +1,12 @@
+HTTP/1.1 200 OK
+Server: nginx/1.7.3
+Date: Wed, 20 Aug 2014 23:27:08 GMT
+Content-Type: text/xml
+Content-Length: 750
+Connection: close
+Cache-Control: private
+X-AspNet-Version: 2.0.50727
+X-Powered-By: ASP.NET
+Strict-Transport-Security: max-age=15768000
+
+<?xml version="1.0" encoding="utf-8"?><InitiateTransactionResponse xmlns="http://schemas.datacontract.org/2004/07/Centricom.POLi.Services.MerchantAPI.Contracts" xmlns:i="http://www.w3.org/2001/XMLSchema-instance"><Errors xmlns:a="http://schemas.datacontract.org/2004/07/Centricom.POLi.Services.MerchantAPI.DCO" /><TransactionStatusCode>Initiated</TransactionStatusCode><Transaction xmlns:a="http://schemas.datacontract.org/2004/07/Centricom.POLi.Services.MerchantAPI.DCO"><a:NavigateURL>https://txn.apac.paywithpoli.com/?token=ix3dphBp7oPMGCKSjH%2flf0OQSFipYvej</a:NavigateURL><a:TransactionRefNo>596464607245</a:TransactionRefNo><a:TransactionToken>ix3dphBp7oPMGCKSjH/lf0OQSFipYvej</a:TransactionToken></Transaction></InitiateTransactionResponse>

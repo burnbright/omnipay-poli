@@ -1,0 +1,12 @@
+HTTP/1.1 200 OK
+Server: nginx/1.7.3
+Date: Wed, 20 Aug 2014 23:55:14 GMT
+Content-Type: text/xml
+Content-Length: 624
+Connection: close
+Cache-Control: private
+X-AspNet-Version: 2.0.50727
+X-Powered-By: ASP.NET
+Strict-Transport-Security: max-age=15768000
+
+<?xml version="1.0" encoding="utf-8"?><InitiateTransactionResponse xmlns="http://schemas.datacontract.org/2004/07/Centricom.POLi.Services.MerchantAPI.Contracts" xmlns:i="http://www.w3.org/2001/XMLSchema-instance"><Errors xmlns:a="http://schemas.datacontract.org/2004/07/Centricom.POLi.Services.MerchantAPI.DCO"><a:Error><a:Code>1025</a:Code><a:Field /><a:Message>The CurrencyAmount field is out of range.</a:Message></a:Error></Errors><TransactionStatusCode i:nil="true" /><Transaction i:nil="true" xmlns:a="http://schemas.datacontract.org/2004/07/Centricom.POLi.Services.MerchantAPI.DCO" /></InitiateTransactionResponse>
