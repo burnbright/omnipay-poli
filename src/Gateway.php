@@ -9,7 +9,7 @@ class Gateway extends AbstractGateway
 
     public function getName()
     {
-        return 'POLi';
+        return 'Poli';
     }
 
     public function getDefaultParameters()
