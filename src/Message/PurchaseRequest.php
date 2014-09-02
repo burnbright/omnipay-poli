@@ -70,7 +70,9 @@ class PurchaseRequest extends AbstractRequest
     {
         $postdata = $this->packageData($this->getData());
         $httpRequest = $this->httpClient->post(
-            $this->endpoint, array('Content-Type'=>'text/xml'), $postdata
+            $this->endpoint,
+            array('Content-Type'=>'text/xml'),
+            $postdata
         );
         $httpResponse = $httpRequest->send();
 
@@ -82,16 +84,19 @@ class PurchaseRequest extends AbstractRequest
         $authenticationcode = $data['AuthenticationCode'];
         unset($data['AuthenticationCode']);
         $fields = "";
-        foreach($data as $field => $value){
-            $fields .= str_repeat(" ",24)."<dco:$field>$value</dco:$field>\n";
+        foreach ($data as $field => $value) {
+            $fields .= str_repeat(" ", 24)."<dco:$field>$value</dco:$field>\n";
         }
+        $namespace = "http://schemas.datacontract.org/2004/07/Centricom.POLi.Services.MerchantAPI.Contracts";
+        $i_namespace = "http://www.w3.org/2001/XMLSchema-instance";
+        $dco_namespace = "http://schemas.datacontract.org/2004/07/Centricom.POLi.Services.MerchantAPI.DCO";
+
         return '<?xml version="1.0" encoding="utf-8" ?>
-                <InitiateTransactionRequest xmlns="http://schemas.datacontract.org/2004/07/Centricom.POLi.Services.MerchantAPI.Contracts" xmlns:i="http://www.w3.org/2001/XMLSchema-instance">
+                <InitiateTransactionRequest xmlns="" xmlns:i="'.$i_namespace.'">
                     <AuthenticationCode>'. $authenticationcode.'</AuthenticationCode>
-                    <Transaction xmlns:dco="http://schemas.datacontract.org/2004/07/Centricom.POLi.Services.MerchantAPI.DCO">'
+                    <Transaction xmlns:dco="'.$dco_namespace.'">'
                         .$fields.
                     '</Transaction>
                 </InitiateTransactionRequest>';
     }
-
 }

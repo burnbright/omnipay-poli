@@ -15,21 +15,25 @@ use Omnipay\Common\Message\RedirectResponseInterface;
 class PurchaseResponse extends AbstractResponse implements RedirectResponseInterface
 {
 
-	protected $error;
+    protected $error;
 
-	public function __construct(RequestInterface $request, $data)
+    public function __construct(RequestInterface $request, $data)
     {
         $this->request = $request;
         $xml = new SimpleXMLElement($data);
         if (!$xml->TransactionStatusCode) {
             throw new InvalidResponseException;
         }
-        $errors = $xml->Errors->children('http://schemas.datacontract.org/2004/07/Centricom.POLi.Services.MerchantAPI.DCO');
+        $errors = $xml->Errors->children(
+            'http://schemas.datacontract.org/2004/07/Centricom.POLi.Services.MerchantAPI.DCO'
+        );
         $this->error = $errors[0]; //only store first error
-        $this->data = $xml->Transaction->children('http://schemas.datacontract.org/2004/07/Centricom.POLi.Services.MerchantAPI.DCO');
+        $this->data = $xml->Transaction->children(
+            'http://schemas.datacontract.org/2004/07/Centricom.POLi.Services.MerchantAPI.DCO'
+        );
     }
 
-	public function isSuccessful()
+    public function isSuccessful()
     {
         return false;
     }
@@ -70,5 +74,4 @@ class PurchaseResponse extends AbstractResponse implements RedirectResponseInter
     {
         return null;
     }
-
 }
