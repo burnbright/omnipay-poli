@@ -92,7 +92,7 @@ class PurchaseRequest extends AbstractRequest
         $dco_namespace = "http://schemas.datacontract.org/2004/07/Centricom.POLi.Services.MerchantAPI.DCO";
 
         return '<?xml version="1.0" encoding="utf-8" ?>
-                <InitiateTransactionRequest xmlns="" xmlns:i="'.$i_namespace.'">
+                <InitiateTransactionRequest xmlns="'.$namespace.'" xmlns:i="'.$i_namespace.'">
                     <AuthenticationCode>'. $authenticationcode.'</AuthenticationCode>
                     <Transaction xmlns:dco="'.$dco_namespace.'">'
                         .$fields.
