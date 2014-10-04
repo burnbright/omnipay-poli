@@ -52,18 +52,36 @@ class PurchaseRequest extends AbstractRequest
         $data['CurrencyCode'] = $this->getCurrency();
         $data['MerchantCheckoutURL'] = $this->getCancelUrl();
         $data['MerchantCode'] = $this->getMerchantCode();
+        $data['MerchantData'] = $this->getTransactionId();
         $data['MerchantDateTime'] = date('Y-m-d\TH:i:s');
         $data['MerchantHomePageURL'] = $this->getCancelUrl();
-        $data['MerchantRef'] = $this->getTransactionId();
+        $data['MerchantRef'] = $this->getCombinedMerchantRef();
+        $data['MerchantReferenceFormat'] = 1;
         $data['NotificationURL'] = $this->getNotifyUrl();
         $data['SuccessfulURL'] = $this->getReturnUrl();
         $data['Timeout'] = 0;
         $data['UnsuccessfulURL'] = $this->getReturnUrl();
-        $data['MerchantData'] = $this->getTransactionReference();
-        $data['MerchantReferenceFormat'] = 0;
         $data['UserIPAddress'] = $this->getClientIp();
         
         return $data;
+    }
+
+    /**
+     * Generate reference data
+     * @link http://www.polipaymentdeveloper.com/doku.php?id=nzreconciliation
+     */
+    protected function getCombinedMerchantRef(){
+        $card = $this->getCard();
+        $id = $this->cleanField($this->getTransactionId());
+        $data = array($this->cleanField($card->getName()), "", $id);
+        return implode("|", $data);
+    }
+
+    /**
+     * Data in reference field must not contain illegal characters
+     */
+    protected function cleanField($field){
+        return substr($field,0,12);
     }
 
     public function send()
@@ -75,7 +93,7 @@ class PurchaseRequest extends AbstractRequest
             $postdata
         );
         $httpResponse = $httpRequest->send();
-
+        echo $httpResponse->getBody();
         return $this->response = new PurchaseResponse($this, $httpResponse->getBody());
     }
 
