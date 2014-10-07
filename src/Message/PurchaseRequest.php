@@ -70,7 +70,8 @@ class PurchaseRequest extends AbstractRequest
      * Generate reference data
      * @link http://www.polipaymentdeveloper.com/doku.php?id=nzreconciliation
      */
-    protected function getCombinedMerchantRef(){
+    protected function getCombinedMerchantRef()
+    {
         $card = $this->getCard();
         $id = $this->cleanField($this->getTransactionId());
         $data = array($this->cleanField($card->getName()), "", $id);
@@ -80,8 +81,9 @@ class PurchaseRequest extends AbstractRequest
     /**
      * Data in reference field must not contain illegal characters
      */
-    protected function cleanField($field){
-        return substr($field,0,12);
+    protected function cleanField($field)
+    {
+        return substr($field, 0, 12);
     }
 
     public function send()
@@ -93,7 +95,6 @@ class PurchaseRequest extends AbstractRequest
             $postdata
         );
         $httpResponse = $httpRequest->send();
-        echo $httpResponse->getBody();
         return $this->response = new PurchaseResponse($this, $httpResponse->getBody());
     }
 
