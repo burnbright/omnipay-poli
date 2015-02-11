@@ -70,12 +70,16 @@ class PurchaseRequest extends AbstractRequest
      * Generate reference data
      * @link http://www.polipaymentdeveloper.com/doku.php?id=nzreconciliation
      */
-    protected function getCombinedMerchantRef()
+    public function getCombinedMerchantRef()
     {
         $card = $this->getCard();
         $id = $this->cleanField($this->getTransactionId());
-        $data = array($this->cleanField($card->getName()), "", $id);
-        return implode("|", $data);
+        if ($card) {
+            $data = array($this->cleanField($card->getName()), "", $id);
+            return implode("|", $data);
+        }
+
+        return $id;
     }
 
     /**
