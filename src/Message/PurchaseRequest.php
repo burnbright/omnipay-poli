@@ -74,7 +74,7 @@ class PurchaseRequest extends AbstractRequest
     {
         $card = $this->getCard();
         $id = $this->cleanField($this->getTransactionId());
-        if ($card) {
+        if ($card && $card->getName()) {
             $data = array($this->cleanField($card->getName()), "", $id);
             return implode("|", $data);
         }
