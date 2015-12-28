@@ -1,9 +1,9 @@
 <?php
 namespace Omnipay\Poli;
 
-use Omnipay\TestCase;
 use Omnipay\Common\CreditCard;
 use Omnipay\Poli\Message\PurchaseRequest;
+use Omnipay\Tests\TestCase;
 
 class PurchaseRequestTest extends TestCase
 {
@@ -33,7 +33,7 @@ class PurchaseRequestTest extends TestCase
         //no card means use standard form
         $this->assertEquals(123, $this->request->getCombinedMerchantRef());
         $data = $this->request->getData();
-        $this->assertEquals(123, $data['MerchantRef']);
+        $this->assertEquals(123, $data['MerchantReference']);
         $this->assertEquals(1, $data['MerchantReferenceFormat']);
 
         //valid card uses combined form

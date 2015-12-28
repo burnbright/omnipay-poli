@@ -11,8 +11,7 @@ use Omnipay\Common\Message\AbstractRequest;
  */
 class PurchaseRequest extends AbstractRequest
 {
-
-    protected $endpoint = 'https://merchantapi.apac.paywithpoli.com/MerchantAPIService.svc/Xml/transaction/initiate';
+    protected $endpoint = 'https://poliapi.apac.paywithpoli.com/api/v2/Transaction/Initiate';
 
     public function getMerchantCode()
     {
@@ -47,22 +46,20 @@ class PurchaseRequest extends AbstractRequest
         );
 
         $data = array();
-        $data['AuthenticationCode'] = $this->getAuthenticationCode();
-        $data['CurrencyAmount'] = $this->getAmount();
+        $data['Amount'] = $this->getAmount();
         $data['CurrencyCode'] = $this->getCurrency();
-        $data['MerchantCheckoutURL'] = $this->getCancelUrl();
-        $data['MerchantCode'] = $this->getMerchantCode();
+        $data['CancellationURL'] = $this->getCancelUrl();
         $data['MerchantData'] = $this->getTransactionId();
         $data['MerchantDateTime'] = date('Y-m-d\TH:i:s');
         $data['MerchantHomePageURL'] = $this->getCancelUrl();
-        $data['MerchantRef'] = $this->getCombinedMerchantRef();
+        $data['MerchantReference'] = $this->getCombinedMerchantRef();
         $data['MerchantReferenceFormat'] = 1;
         $data['NotificationURL'] = $this->getNotifyUrl();
-        $data['SuccessfulURL'] = $this->getReturnUrl();
+        $data['SuccessURL'] = $this->getReturnUrl();
         $data['Timeout'] = 0;
-        $data['UnsuccessfulURL'] = $this->getReturnUrl();
+        $data['FailureURL'] = $this->getReturnUrl();
         $data['UserIPAddress'] = $this->getClientIp();
-        
+
         return $data;
     }
 
@@ -92,10 +89,24 @@ class PurchaseRequest extends AbstractRequest
 
     public function send()
     {
-        $postdata = $this->packageData($this->getData());
+        return $this->sendData($this->getData());
+    }
+
+    public function sendData($data)
+    {
+        $merchantCode = $this->getMerchantCode();
+        $authenticationCode = $this->getAuthenticationCode();
+        $auth = base64_encode($merchantCode.":".$authenticationCode); //'S61xxxxx:AuthCode123');
+        unset($data['MerchantCode'], $data['AuthenticationCode']);
+
+        //$postdata = $this->packageData($data);
+        $postdata = json_encode($data);
         $httpRequest = $this->httpClient->post(
             $this->endpoint,
-            array('Content-Type'=>'text/xml'),
+            array(
+                'Content-Type'=>'application/json',
+                'Authorization' => 'Basic '.$auth,
+            ),
             $postdata
         );
         $httpResponse = $httpRequest->send();
