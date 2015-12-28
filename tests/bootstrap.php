@@ -6,5 +6,5 @@ error_reporting(E_ALL | E_STRICT);
 $autoloader = require __DIR__.'/../vendor/autoload.php';
 
 // autoload abstract TestCase classes in test directory
-$autoloader->add('Omnipay', __DIR__.'/../vendor/omnipay/omnipay/tests');
+//$autoloader->add('Omnipay', __DIR__.'/../vendor/omnipay/tests');
 

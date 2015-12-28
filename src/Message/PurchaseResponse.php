@@ -3,6 +3,7 @@
 namespace Omnipay\Poli\Message;
 
 use DOMDocument;
+use Guzzle\Http\EntityBody;
 use SimpleXMLElement;
 use Omnipay\Common\Message\AbstractResponse;
 use Omnipay\Common\Message\RequestInterface;
@@ -14,62 +15,96 @@ use Omnipay\Common\Message\RedirectResponseInterface;
  */
 class PurchaseResponse extends AbstractResponse implements RedirectResponseInterface
 {
-
-    protected $error;
-
+    /**
+     * PurchaseResponse constructor.
+     *
+     * @param RequestInterface $request
+     * @param EntityBody $data
+     * @throws InvalidResponseException
+     */
     public function __construct(RequestInterface $request, $data)
     {
         $this->request = $request;
-        $xml = new SimpleXMLElement($data);
-        if (!$xml->TransactionStatusCode) {
-            throw new InvalidResponseException;
-        }
-        $errors = $xml->Errors->children(
-            'http://schemas.datacontract.org/2004/07/Centricom.POLi.Services.MerchantAPI.DCO'
-        );
-        $this->error = $errors[0]; //only store first error
-        $this->data = $xml->Transaction->children(
-            'http://schemas.datacontract.org/2004/07/Centricom.POLi.Services.MerchantAPI.DCO'
-        );
+        $this->data = json_decode($data, true);
     }
 
+    /**
+     * Is the result a success?
+     *
+     * @return bool
+     */
     public function isSuccessful()
     {
-        return false;
+        return isset($this->data['Success']) ? $this->data['Success'] : false;
     }
 
+    /**
+     * Do we need to redirect?
+     *
+     * @return bool
+     */
     public function isRedirect()
     {
-        return isset($this->data->NavigateURL);
+        return isset($this->data['NavigateURL']);
     }
 
+    /**
+     * Transaction reference
+     *
+     * @return string
+     */
     public function getTransactionReference()
     {
-        return isset($this->data->TransactionRefNo) ? (string)$this->data->TransactionRefNo : null;
+        return $this->data['TransactionRefNo'];
     }
 
+    /**
+     * Error message, e.g.: '' = no error
+     *
+     * @return string
+     */
     public function getMessage()
     {
-        return isset($this->error->Message) ? (string)$this->error->Message : null;
+        return $this->data['ErrorMessage'];
     }
 
+    /**
+     * Error code, e.g.: 0 = no error
+     *
+     * @return int
+     */
     public function getCode()
     {
-        return isset($this->error->Code) ? (string)$this->error->Code : null;
+        return $this->data['ErrorCode'];
     }
 
+    /**
+     * Redirection URL
+     *
+     * @return string
+     */
     public function getRedirectUrl()
     {
         if ($this->isRedirect()) {
-            return (string)$this->data->NavigateURL;
+            return $this->data['NavigateURL'];
         }
     }
 
+    /**
+     * Redirection method
+     *
+     * @return string
+     */
     public function getRedirectMethod()
     {
         return 'GET';
     }
 
+    /**
+     * Redirection data
+     *
+     * @return null
+     */
     public function getRedirectData()
     {
         return null;
