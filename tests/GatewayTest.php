@@ -1,8 +1,9 @@
 <?php
 namespace Omnipay\Poli;
 
-use Omnipay\GatewayTestCase;
 use Omnipay\Common\CreditCard;
+use Omnipay\Common\Exception\InvalidRequestException;
+use Omnipay\Tests\GatewayTestCase;
 
 class GatewayTest extends GatewayTestCase
 {
@@ -30,7 +31,7 @@ class GatewayTest extends GatewayTestCase
             'cancelUrl' => 'http://www.mytest.co.nz/shop/cancelpayment'
         ))->send();
 
-        $this->assertFalse($response->isSuccessful());
+        $this->assertTrue($response->isSuccessful());
         $this->assertTrue($response->isRedirect());
         $this->assertEquals('596464607245', $response->getTransactionReference());
 
@@ -44,19 +45,24 @@ class GatewayTest extends GatewayTestCase
     {
         $this->setMockHttpResponse('PurchaseRequestFailure.txt');
 
-        $response = $this->gateway->purchase(array(
-            'amount' => '-12345.00',
-            'currency' => 'NZD',
-            'card' => $this->getValidCard(),
-            'transactionID' => 12345,
-            'returnUrl' => 'http://www.mytest.co.nz/shop/completepayment',
-            'notifyUrl' => 'http://www.mytest.co.nz/shop/notifypayment',
-            'cancelUrl' => 'http://www.mytest.co.nz/shop/cancelpayment'
-        ))->send();
-        $this->assertFalse($response->isSuccessful());
-        $this->assertFalse($response->isRedirect());
-        $this->assertEquals('1025', $response->getCode());
-        $this->assertEquals('The CurrencyAmount field is out of range.', $response->getMessage());
+        try {
+            $response = $this->gateway->purchase(array(
+                'amount' => '-12345.00',
+                'currency' => 'NZD',
+                'card' => $this->getValidCard(),
+                'transactionID' => 12345,
+                'returnUrl' => 'http://www.mytest.co.nz/shop/completepayment',
+                'notifyUrl' => 'http://www.mytest.co.nz/shop/notifypayment',
+                'cancelUrl' => 'http://www.mytest.co.nz/shop/cancelpayment'
+            ))->send();
+            $this->assertFalse(true, 'Expecting an InvalidRequestException');
+        } catch (InvalidRequestException $ire) {
+            $this->assertEquals('A negative amount is not allowed.', $ire->getMessage());
+        }
+//        $this->assertFalse($response->isSuccessful());
+//        $this->assertFalse($response->isRedirect());
+//        $this->assertEquals('1025', $response->getCode());
+//        $this->assertEquals('The CurrencyAmount field is out of range.', $response->getMessage());
     }
 
     public function testCompletePurchaseSuccess()

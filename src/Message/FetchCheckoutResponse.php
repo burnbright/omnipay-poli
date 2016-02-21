@@ -2,24 +2,22 @@
 
 namespace Omnipay\Poli\Message;
 
-use DOMDocument;
-use Guzzle\Http\EntityBody;
-use SimpleXMLElement;
+use Guzzle\Http\EntityBodyInterface;
 use Omnipay\Common\Message\AbstractResponse;
 use Omnipay\Common\Message\RequestInterface;
 use Omnipay\Common\Exception\InvalidResponseException;
 use Omnipay\Common\Message\RedirectResponseInterface;
 
 /**
- * Poli Response
+ * Poli Checkout Response
+ *
  */
-class PurchaseResponse extends AbstractResponse implements RedirectResponseInterface
+class FetchCheckoutResponse extends AbstractResponse implements RedirectResponseInterface
 {
     /**
-     * PurchaseResponse constructor.
      *
      * @param RequestInterface $request
-     * @param EntityBody $data
+     * @param string $data
      * @throws InvalidResponseException
      */
     public function __construct(RequestInterface $request, $data)
@@ -35,7 +33,7 @@ class PurchaseResponse extends AbstractResponse implements RedirectResponseInter
      */
     public function isSuccessful()
     {
-        return isset($this->data['Success']) ? $this->data['Success'] : false;
+        return !$this->getCode();
     }
 
     /**
@@ -49,16 +47,6 @@ class PurchaseResponse extends AbstractResponse implements RedirectResponseInter
     }
 
     /**
-     * Transaction reference
-     *
-     * @return string
-     */
-    public function getTransactionReference()
-    {
-        return $this->data['TransactionRefNo'];
-    }
-
-    /**
      * Error message, e.g.: '' = no error
      *
      * @return string
@@ -69,7 +57,7 @@ class PurchaseResponse extends AbstractResponse implements RedirectResponseInter
     }
 
     /**
-     * Error code, e.g.: 0 = no error
+     * Error code, e.g.: 0 or '' = no error
      *
      * @return int
      */

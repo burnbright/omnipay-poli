@@ -4,14 +4,24 @@ namespace Omnipay\Poli;
 
 use Omnipay\Common\AbstractGateway;
 
+/**
+ * Class Gateway
+ *
+ * @package Omnipay\Poli
+ */
 class Gateway extends AbstractGateway
 {
-
+    /**
+     * @inheritdoc
+     */
     public function getName()
     {
         return 'Poli';
     }
 
+    /**
+     * @inheritdoc
+     */
     public function getDefaultParameters()
     {
         return array(
@@ -20,11 +30,18 @@ class Gateway extends AbstractGateway
         );
     }
 
+    /**
+     * @return string
+     */
     public function getMerchantCode()
     {
         return $this->getParameter('merchantCode');
     }
 
+    /**
+     * @param string $value
+     * @return $this
+     */
     public function setMerchantCode($value)
     {
         return $this->setParameter('merchantCode', $value);
@@ -48,5 +65,10 @@ class Gateway extends AbstractGateway
     public function completePurchase(array $parameters = array())
     {
         return $this->createRequest('\Omnipay\Poli\Message\CompletePurchaseRequest', $parameters);
+    }
+
+    public function fetchCheckout(array $parameters = array())
+    {
+        return $this->createRequest('\Omnipay\Poli\Message\FetchCheckoutRequest', $parameters);
     }
 }

@@ -2,6 +2,7 @@
 
 namespace Omnipay\Poli\Message;
 
+use Omnipay\Common\Exception\InvalidRequestException;
 use SimpleXMLElement;
 use Omnipay\Common\Exception\InvalidResponseException;
 
@@ -12,8 +13,8 @@ use Omnipay\Common\Exception\InvalidResponseException;
  */
 class CompletePurchaseRequest extends PurchaseRequest
 {
-
-    protected $endpoint = "https://publicapi.apac.paywithpoli.com/api/Transaction/GetTransaction";
+    //protected $endpoint = "https://publicapi.apac.paywithpoli.com/api/Transaction/GetTransaction";
+    protected $endpoint = 'https://poliapi.apac.paywithpoli.com/api/v2/Transaction/GetTransaction';
 
     public function getData()
     {
@@ -39,9 +40,14 @@ class CompletePurchaseRequest extends PurchaseRequest
 
     public function send()
     {
+        return $this->sendData($this->getData());
+    }
+
+    public function sendData($data)
+    {
         $request = $this->httpClient->get($this->endpoint)
-                        ->setAuth($this->getMerchantCode(), $this->getAuthenticationCode());
-        $request->getQuery()->replace($this->getData());
+            ->setAuth($this->getMerchantCode(), $this->getAuthenticationCode());
+        $request->getQuery()->replace($data);
         $httpResponse = $request->send();
 
         return $this->response = new CompletePurchaseResponse($this, $httpResponse->getBody());
