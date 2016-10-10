@@ -23,7 +23,12 @@ class CompletePurchaseRequest extends PurchaseRequest
             'authenticationCode'
         );
 
-        $token = $this->httpRequest->query->get('token');
+        $token = $this->getToken();
+
+        if (!$token) {
+            $token = $this->httpRequest->query->get('token');
+        }
+
         if (!$token) {
             //this may be a POST nudge request, so look for the token there
             $token = $this->httpRequest->request->get('Token');
@@ -51,5 +56,10 @@ class CompletePurchaseRequest extends PurchaseRequest
         $httpResponse = $request->send();
 
         return $this->response = new CompletePurchaseResponse($this, $httpResponse->getBody());
+    }
+
+    public function getToken()
+    {
+        return $this->getParameter('token');
     }
 }
