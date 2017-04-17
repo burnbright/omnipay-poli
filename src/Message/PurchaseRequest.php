@@ -50,7 +50,7 @@ class PurchaseRequest extends AbstractRequest
         $data['CurrencyCode'] = $this->getCurrency();
         $data['CancellationURL'] = $this->getCancelUrl();
         $data['MerchantData'] = $this->getTransactionId();
-        $data['MerchantDateTime'] = date('Y-m-d\TH:i:s');
+        $data['MerchantDateTime'] = (new \DateTime())->format('Y-m-d\TH:i:s');
         $data['MerchantHomePageURL'] = $this->getCancelUrl();
         $data['MerchantReference'] = $this->getCombinedMerchantRef();
         $data['MerchantReferenceFormat'] = 1;
