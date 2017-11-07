@@ -99,7 +99,6 @@ class PurchaseRequest extends AbstractRequest
         $auth = base64_encode($merchantCode.":".$authenticationCode); //'S61xxxxx:AuthCode123');
         unset($data['MerchantCode'], $data['AuthenticationCode']);
 
-        //$postdata = $this->packageData($data);
         $postdata = json_encode($data);
         $httpRequest = $this->httpClient->post(
             $this->endpoint,
@@ -111,26 +110,5 @@ class PurchaseRequest extends AbstractRequest
         );
         $httpResponse = $httpRequest->send();
         return $this->response = new PurchaseResponse($this, $httpResponse->getBody());
-    }
-
-    protected function packageData($data)
-    {
-        $authenticationcode = $data['AuthenticationCode'];
-        unset($data['AuthenticationCode']);
-        $fields = "";
-        foreach ($data as $field => $value) {
-            $fields .= str_repeat(" ", 24)."<dco:$field>$value</dco:$field>\n";
-        }
-        $namespace = "http://schemas.datacontract.org/2004/07/Centricom.POLi.Services.MerchantAPI.Contracts";
-        $i_namespace = "http://www.w3.org/2001/XMLSchema-instance";
-        $dco_namespace = "http://schemas.datacontract.org/2004/07/Centricom.POLi.Services.MerchantAPI.DCO";
-
-        return '<?xml version="1.0" encoding="utf-8" ?>
-                <InitiateTransactionRequest xmlns="'.$namespace.'" xmlns:i="'.$i_namespace.'">
-                    <AuthenticationCode>'. $authenticationcode.'</AuthenticationCode>
-                    <Transaction xmlns:dco="'.$dco_namespace.'">'
-                        .$fields.
-                    '</Transaction>
-                </InitiateTransactionRequest>';
     }
 }
