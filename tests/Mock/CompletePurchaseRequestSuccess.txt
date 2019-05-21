@@ -11,4 +11,31 @@ X-AspNet-Version: 4.0.30319
 X-Powered-By: ASP.NET
 Strict-Transport-Security: max-age=15768000
 
-{"TransactionRefNo":"396414606841","CurrencyCode":"NZD","CountryCode":"NZL","PaymentAmount":10.00,"AmountPaid":10.00,"EstablishedDateTime":"2014-08-21T11:43:31.243","StartDateTime":"2014-08-21T11:43:31.243","EndDateTime":"2014-08-21T11:44:24.94","BankReceipt":"43533623-6268","BankReceiptDateTime":"21 August 2014 11:44:24","TransactionStatusCode":"Completed","ErrorCode":"","ErrorMessage":"","FinancialInstitutionCode":"iBankNZ01","FinancialInstituationName":"iBank NZ 01","MerchantReference":"123456","MerchantReferenceData":null,"MerchantAcctName":"POLi Holding Acct","MerchantAcctSortCode":"060303","MerchantAccountSuffix":"006","MerchantAccountNumber":"0012834","PayerFirstName":"","PayerFamilyName":"","PayerAcctSortCode":"123456","PayerAcctNumber":"96743354","PayerAccountSuffix":""}
+{
+    "TransactionRefNo":"396414606841",
+    "CurrencyCode":"NZD",
+    "CountryCode":"NZL",
+    "PaymentAmount":10.00,
+    "AmountPaid":10.00,
+    "EstablishedDateTime":"2014-08-21T11:43:31.243",
+    "StartDateTime":"2014-08-21T11:43:31.243",
+    "EndDateTime":"2014-08-21T11:44:24.94",
+    "BankReceipt":"43533623-6268",
+    "BankReceiptDateTime":"21 August 2014 11:44:24",
+    "TransactionStatusCode":"Completed",
+    "ErrorCode":"",
+    "ErrorMessage":"",
+    "FinancialInstitutionCode":"iBankNZ01",
+    "FinancialInstituationName":"iBank NZ 01",
+    "MerchantReference":"123456",
+    "MerchantReferenceData":null,
+    "MerchantAcctName":"POLi Holding Acct",
+    "MerchantAcctSortCode":"060303",
+    "MerchantAccountSuffix":"006",
+    "MerchantAccountNumber":"0012834",
+    "PayerFirstName":"",
+    "PayerFamilyName":"",
+    "PayerAcctSortCode":"123456",
+    "PayerAcctNumber":"96743354",
+    "PayerAccountSuffix":""
+}

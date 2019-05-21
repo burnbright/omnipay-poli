@@ -6,13 +6,13 @@ use Omnipay\Common\Message\AbstractRequest;
 
 /**
  * Poli Purchase Request
- * 
- * @link http://www.polipaymentdeveloper.com/doku.php?id=initiate
+ *
+ * @link https://www.polipayments.com/InitiateTransaction
  */
 class PurchaseRequest extends AbstractRequest
 {
 
-    protected $endpoint = 'https://merchantapi.apac.paywithpoli.com/MerchantAPIService.svc/Xml/transaction/initiate';
+    protected $endpoint = 'https://poliapi.apac.paywithpoli.com/api/v2/Transaction/Initiate';
 
     public function getMerchantCode()
     {
@@ -47,22 +47,18 @@ class PurchaseRequest extends AbstractRequest
         );
 
         $data = array();
-        $data['AuthenticationCode'] = $this->getAuthenticationCode();
-        $data['CurrencyAmount'] = $this->getAmount();
+        $data['Amount'] = $this->getAmount();
         $data['CurrencyCode'] = $this->getCurrency();
-        $data['MerchantCheckoutURL'] = $this->getCancelUrl();
-        $data['MerchantCode'] = $this->getMerchantCode();
-        $data['MerchantData'] = $this->getTransactionId();
-        $data['MerchantDateTime'] = date('Y-m-d\TH:i:s');
-        $data['MerchantHomePageURL'] = $this->getCancelUrl();
-        $data['MerchantRef'] = $this->getCombinedMerchantRef();
+        $data['MerchantReference'] = $this->getCombinedMerchantRef();
         $data['MerchantReferenceFormat'] = 1;
+        $data['MerchantData'] = $this->getTransactionId();
+        $data['MerchantHomepageURL'] = $this->getCancelUrl();
+        $data['SuccessURL'] = $this->getReturnUrl();
+        $data['FailureURL'] = $this->getReturnUrl();
+        $data['CancellationURL'] = $this->getCancelUrl();
         $data['NotificationURL'] = $this->getNotifyUrl();
-        $data['SuccessfulURL'] = $this->getReturnUrl();
         $data['Timeout'] = 0;
-        $data['UnsuccessfulURL'] = $this->getReturnUrl();
-        $data['UserIPAddress'] = $this->getClientIp();
-        
+
         return $data;
     }
 
@@ -92,34 +88,24 @@ class PurchaseRequest extends AbstractRequest
 
     public function send()
     {
-        $postdata = $this->packageData($this->getData());
+        
+        // don't throw exceptions for 4xx errors
+        $this->httpClient->getEventDispatcher()->addListener(
+            'request.error',
+            function ($event) {
+                if ($event['response']->isClientError()) {
+                    $event->stopPropagation();
+                }
+            }
+        );
+
+        $postdata = json_encode($this->getData());
         $httpRequest = $this->httpClient->post(
             $this->endpoint,
-            array('Content-Type'=>'text/xml'),
+            array('Content-Type'=>'application/json'),
             $postdata
-        );
+        )->setAuth($this->getMerchantCode(), $this->getAuthenticationCode());
         $httpResponse = $httpRequest->send();
         return $this->response = new PurchaseResponse($this, $httpResponse->getBody());
-    }
-
-    protected function packageData($data)
-    {
-        $authenticationcode = $data['AuthenticationCode'];
-        unset($data['AuthenticationCode']);
-        $fields = "";
-        foreach ($data as $field => $value) {
-            $fields .= str_repeat(" ", 24)."<dco:$field>$value</dco:$field>\n";
-        }
-        $namespace = "http://schemas.datacontract.org/2004/07/Centricom.POLi.Services.MerchantAPI.Contracts";
-        $i_namespace = "http://www.w3.org/2001/XMLSchema-instance";
-        $dco_namespace = "http://schemas.datacontract.org/2004/07/Centricom.POLi.Services.MerchantAPI.DCO";
-
-        return '<?xml version="1.0" encoding="utf-8" ?>
-                <InitiateTransactionRequest xmlns="'.$namespace.'" xmlns:i="'.$i_namespace.'">
-                    <AuthenticationCode>'. $authenticationcode.'</AuthenticationCode>
-                    <Transaction xmlns:dco="'.$dco_namespace.'">'
-                        .$fields.
-                    '</Transaction>
-                </InitiateTransactionRequest>';
     }
 }

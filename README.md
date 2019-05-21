@@ -39,6 +39,13 @@ The following gateways are provided by this package:
 For general usage instructions, please see the main [Omnipay](https://github.com/omnipay/omnipay)
 repository.
 
+## Tests
+
+Run test suite with docker:
+```sh
+docker run -v $(pwd):/app --rm php:5.6 bash -c "cd /app; php -d date.timezone=Pacific/Auckland /app/vendor/bin/phpunit"
+```
+
 ## Support
 
 If you are having general issues with Omnipay, we suggest posting on

@@ -1,0 +1,14 @@
+HTTP/1.1 400 Bad Request
+Server: nginx/1.15.7
+Date: Tue, 21 May 2019 23:01:54 GMT
+Content-Type: application/json; charset=utf-8
+Content-Length: 117 Connection: close
+Cache-Control: no-cache Pragma: no-cache
+Expires: -1 X-XSS-Protection: 1; mode=block
+X-Content-Type-Options: nosniff
+Strict-Transport-Security: max-age=15768000; includeSubDomains
+
+{
+    "ErrorCode":14052,
+    "ErrorMessage":"The transaction token provided is corrupted: 5lvIbQXpE7Og7yZcir2HJgYxvSsfarVcfoo"
+}
