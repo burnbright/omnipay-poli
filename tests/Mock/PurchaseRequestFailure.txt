@@ -1,12 +1,17 @@
-HTTP/1.1 200 OK
-Server: nginx/1.7.3
-Date: Wed, 20 Aug 2014 23:55:14 GMT
-Content-Type: text/xml
-Content-Length: 624
-Connection: close
-Cache-Control: private
-X-AspNet-Version: 2.0.50727
-X-Powered-By: ASP.NET
-Strict-Transport-Security: max-age=15768000
+HTTP/1.1 400 Bad Request Server: nginx/1.15.7
+Date: Tue, 21 May 2019 22:02:52 GMT
+Content-Type: application/json; charset=utf-8
+Content-Length: 249 Connection: close
+Cache-Control: no-cache
+Pragma: no-cache
+Expires: -1 X-XSS-Protection: 1; mode=block
+X-Content-Type-Options: nosniff
+Strict-Transport-Security: max-age=15768000; includeSubDomains
 
-<?xml version="1.0" encoding="utf-8"?><InitiateTransactionResponse xmlns="http://schemas.datacontract.org/2004/07/Centricom.POLi.Services.MerchantAPI.Contracts" xmlns:i="http://www.w3.org/2001/XMLSchema-instance"><Errors xmlns:a="http://schemas.datacontract.org/2004/07/Centricom.POLi.Services.MerchantAPI.DCO"><a:Error><a:Code>1025</a:Code><a:Field /><a:Message>The CurrencyAmount field is out of range.</a:Message></a:Error></Errors><TransactionStatusCode i:nil="true" /><Transaction i:nil="true" xmlns:a="http://schemas.datacontract.org/2004/07/Centricom.POLi.Services.MerchantAPI.DCO" /></InitiateTransactionResponse>
+{
+    "Success":false,
+    "NavigateURL":null,
+    "ErrorCode":14058,
+    "ErrorMessage":"Failed to initiate transaction for merchant 'T123456' with reference '12345': The payment amount must be greater than, or equal to, 1.0",
+    "TransactionRefNo":null
+}

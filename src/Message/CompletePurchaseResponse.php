@@ -15,7 +15,7 @@ class CompletePurchaseResponse extends AbstractResponse
     public function __construct(RequestInterface $request, $data)
     {
         $data = json_decode($data);
-        if (!$data || !$data->TransactionRefNo) {
+        if (!$data) {
             throw new InvalidResponseException;
         }
         $this->data = $data;

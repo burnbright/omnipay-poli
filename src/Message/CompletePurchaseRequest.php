@@ -2,18 +2,17 @@
 
 namespace Omnipay\Poli\Message;
 
-use SimpleXMLElement;
-use Omnipay\Common\Exception\InvalidResponseException;
+use Omnipay\Common\Exception\InvalidRequestException;
 
 /**
  * Poli Complete Purchase Request
- * 
- * @link http://www.polipaymentdeveloper.com/doku.php?id=gettransaction
+ *
+ * @link https://www.polipayments.com/GetTransaction
  */
 class CompletePurchaseRequest extends PurchaseRequest
 {
 
-    protected $endpoint = "https://publicapi.apac.paywithpoli.com/api/Transaction/GetTransaction";
+    protected $endpoint = "https://poliapi.apac.paywithpoli.com/api/v2/Transaction/GetTransaction";
 
     public function getData()
     {
@@ -31,6 +30,7 @@ class CompletePurchaseRequest extends PurchaseRequest
         if (!$token) {
             throw new InvalidRequestException('Transaction token is missing');
         }
+
         $data = array();
         $data['token'] = $token;
         
@@ -39,11 +39,21 @@ class CompletePurchaseRequest extends PurchaseRequest
 
     public function send()
     {
+
+        // don't throw exceptions for 4xx errors
+        $this->httpClient->getEventDispatcher()->addListener(
+            'request.error',
+            function ($event) {
+                if ($event['response']->isClientError()) {
+                    $event->stopPropagation();
+                }
+            }
+        );
+
         $request = $this->httpClient->get($this->endpoint)
-                        ->setAuth($this->getMerchantCode(), $this->getAuthenticationCode());
+            ->setAuth($this->getMerchantCode(), $this->getAuthenticationCode());
         $request->getQuery()->replace($this->getData());
         $httpResponse = $request->send();
-
         return $this->response = new CompletePurchaseResponse($this, $httpResponse->getBody());
     }
 }
