@@ -96,20 +96,21 @@ class PurchaseRequest extends AbstractRequest
     {
         $merchantCode = $this->getMerchantCode();
         $authenticationCode = $this->getAuthenticationCode();
-        $auth = base64_encode($merchantCode.":".$authenticationCode); //'S61xxxxx:AuthCode123');
+        $auth = base64_encode($merchantCode . ":" . $authenticationCode); //'S61xxxxx:AuthCode123');
         unset($data['MerchantCode'], $data['AuthenticationCode']);
 
         //$postdata = $this->packageData($data);
         $postdata = json_encode($data);
-        $httpRequest = $this->httpClient->post(
+        $httpResponse = $this->httpClient->request(
+            'post',
             $this->endpoint,
             array(
-                'Content-Type'=>'application/json',
-                'Authorization' => 'Basic '.$auth,
+                'Content-Type' => 'application/json',
+                'Authorization' => 'Basic ' . $auth,
             ),
             $postdata
         );
-        $httpResponse = $httpRequest->send();
+        
         return $this->response = new PurchaseResponse($this, $httpResponse->getBody());
     }
 
@@ -119,18 +120,18 @@ class PurchaseRequest extends AbstractRequest
         unset($data['AuthenticationCode']);
         $fields = "";
         foreach ($data as $field => $value) {
-            $fields .= str_repeat(" ", 24)."<dco:$field>$value</dco:$field>\n";
+            $fields .= str_repeat(" ", 24) . "<dco:$field>$value</dco:$field>\n";
         }
         $namespace = "http://schemas.datacontract.org/2004/07/Centricom.POLi.Services.MerchantAPI.Contracts";
         $i_namespace = "http://www.w3.org/2001/XMLSchema-instance";
         $dco_namespace = "http://schemas.datacontract.org/2004/07/Centricom.POLi.Services.MerchantAPI.DCO";
 
         return '<?xml version="1.0" encoding="utf-8" ?>
-                <InitiateTransactionRequest xmlns="'.$namespace.'" xmlns:i="'.$i_namespace.'">
-                    <AuthenticationCode>'. $authenticationcode.'</AuthenticationCode>
-                    <Transaction xmlns:dco="'.$dco_namespace.'">'
-                        .$fields.
-                    '</Transaction>
+                <InitiateTransactionRequest xmlns="' . $namespace . '" xmlns:i="' . $i_namespace . '">
+                    <AuthenticationCode>' . $authenticationcode . '</AuthenticationCode>
+                    <Transaction xmlns:dco="' . $dco_namespace . '">'
+            . $fields .
+            '</Transaction>
                 </InitiateTransactionRequest>';
     }
 }

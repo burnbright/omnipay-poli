@@ -18,7 +18,7 @@ class GatewayTest extends GatewayTestCase
     }
 
     public function testPurchaseSuccess()
-    {     
+    {
         $this->setMockHttpResponse('PurchaseRequestSuccess.txt');
 
         $response = $this->gateway->purchase(array(
@@ -94,5 +94,4 @@ class GatewayTest extends GatewayTestCase
         $this->assertNull($response->getMessage());
         $this->assertEquals("396414606841", $response->getTransactionReference());
     }
-
 }

@@ -45,8 +45,7 @@ class PurchaseRequestTest extends TestCase
         unset($params['card']['firstName']);
         unset($params['card']['lastName']);
         $this->request->initialize($params);
-        var_dump($params['card']);
+        // var_dump($params['card']);
         $this->assertEquals(123, $this->request->getCombinedMerchantRef());
     }
-
 }
