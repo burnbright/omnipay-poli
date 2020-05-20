@@ -2,7 +2,6 @@
 
 namespace Omnipay\Poli\Message;
 
-use JsonSerializable;
 use Omnipay\Common\Message\AbstractRequest;
 use Omnipay\Common\Message\RedirectResponseInterface;
 
