@@ -3,8 +3,7 @@
 namespace Omnipay\Poli\Message;
 
 use Omnipay\Common\Exception\InvalidRequestException;
-use Omnipay\Common\Exception\InvalidResponseException;
-use SimpleXMLElement;
+use Omnipay\Common\Message\RedirectResponseInterface;
 
 /**
  * Poli Complete Purchase Request
@@ -43,12 +42,12 @@ class CompletePurchaseRequest extends PurchaseRequest
         return $data;
     }
 
-    public function send()
+    public function send(): RedirectResponseInterface
     {
         return $this->sendData($this->getData());
     }
 
-    public function sendData($data)
+    public function sendData($data): RedirectResponseInterface
     {
         $auth = base64_encode($this->getMerchantCode() . ':' . $this->getAuthenticationCode());
         $headers = [
@@ -62,7 +61,7 @@ class CompletePurchaseRequest extends PurchaseRequest
         return $this->response = new CompletePurchaseResponse($this, $httpResponse->getBody());
     }
 
-    public function getToken()
+    public function getToken(): ?string
     {
         return $this->getParameter('token');
     }

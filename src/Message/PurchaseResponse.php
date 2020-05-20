@@ -2,13 +2,11 @@
 
 namespace Omnipay\Poli\Message;
 
-use DOMDocument;
 use Guzzle\Http\EntityBody;
 use Omnipay\Common\Exception\InvalidResponseException;
 use Omnipay\Common\Message\AbstractResponse;
 use Omnipay\Common\Message\RedirectResponseInterface;
 use Omnipay\Common\Message\RequestInterface;
-use SimpleXMLElement;
 
 /**
  * Poli Response
@@ -33,7 +31,7 @@ class PurchaseResponse extends AbstractResponse implements RedirectResponseInter
      *
      * @return bool
      */
-    public function isSuccessful()
+    public function isSuccessful(): bool
     {
         return isset($this->data['Success']) ? $this->data['Success'] : false;
     }
@@ -43,7 +41,7 @@ class PurchaseResponse extends AbstractResponse implements RedirectResponseInter
      *
      * @return bool
      */
-    public function isRedirect()
+    public function isRedirect(): bool
     {
         return isset($this->data['NavigateURL']);
     }
@@ -53,7 +51,7 @@ class PurchaseResponse extends AbstractResponse implements RedirectResponseInter
      *
      * @return string
      */
-    public function getTransactionReference()
+    public function getTransactionReference(): string
     {
         return $this->data['TransactionRefNo'];
     }
@@ -63,7 +61,7 @@ class PurchaseResponse extends AbstractResponse implements RedirectResponseInter
      *
      * @return string
      */
-    public function getMessage()
+    public function getMessage(): string
     {
         return $this->data['ErrorMessage'] ?? $this->data['Message'] ?? null;
     }
@@ -73,7 +71,7 @@ class PurchaseResponse extends AbstractResponse implements RedirectResponseInter
      *
      * @return int
      */
-    public function getCode()
+    public function getCode(): ?int
     {
         return $this->data['ErrorCode'] ?? null;
     }
@@ -83,7 +81,7 @@ class PurchaseResponse extends AbstractResponse implements RedirectResponseInter
      *
      * @return string
      */
-    public function getRedirectUrl()
+    public function getRedirectUrl(): string
     {
         if ($this->isRedirect()) {
             return $this->data['NavigateURL'];
@@ -95,7 +93,7 @@ class PurchaseResponse extends AbstractResponse implements RedirectResponseInter
      *
      * @return string
      */
-    public function getRedirectMethod()
+    public function getRedirectMethod(): string
     {
         return 'GET';
     }

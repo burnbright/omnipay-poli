@@ -2,14 +2,15 @@
 
 namespace Omnipay\Poli\Message;
 
-use Omnipay\Common\Message\AbstractResponse;
-use Omnipay\Common\Message\RequestInterface;
 use Omnipay\Common\Exception\InvalidResponseException;
+use Omnipay\Common\Message\AbstractResponse;
+use Omnipay\Common\Message\RedirectResponseInterface;
+use Omnipay\Common\Message\RequestInterface;
 
 /**
  * Poli Complete Purchase Response
  */
-class CompletePurchaseResponse extends AbstractResponse
+class CompletePurchaseResponse extends AbstractResponse implements RedirectResponseInterface
 {
 
     public function __construct(RequestInterface $request, $data)
@@ -21,29 +22,35 @@ class CompletePurchaseResponse extends AbstractResponse
         $this->data = $data;
     }
 
-    public function isSuccessful()
+    public function isSuccessful(): bool
     {
         return !$this->getCode() && $this->data->TransactionStatusCode === "Completed";
     }
 
-    public function getTransactionReference()
+    public function getTransactionReference(): ?string
     {
         if ($this->data->TransactionRefNo) {
             return $this->data->TransactionRefNo;
         }
+
+        return null;
     }
 
-    public function getCode()
+    public function getCode(): ?int
     {
         if ($this->data->ErrorCode) {
             return $this->data->ErrorCode;
         }
+
+        return null;
     }
 
-    public function getMessage()
+    public function getMessage(): ?string
     {
         if ($this->data->ErrorMessage) {
             return $this->data->ErrorMessage;
         }
+
+        return null;
     }
 }

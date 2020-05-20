@@ -2,8 +2,8 @@
 
 namespace Omnipay\Poli\Message;
 
-use JsonSerializable;
 use Omnipay\Common\Message\AbstractRequest;
+use Omnipay\Common\Message\RedirectResponseInterface;
 
 /**
  * Poli Purchase Request
@@ -14,7 +14,7 @@ class PurchaseRequest extends AbstractRequest
 {
     protected $endpoint = 'https://poliapi.apac.paywithpoli.com/api/v2/Transaction/Initiate';
 
-    public function getMerchantCode(): string
+    public function getMerchantCode(): ?string
     {
         return $this->getParameter('merchantCode');
     }
@@ -24,7 +24,7 @@ class PurchaseRequest extends AbstractRequest
         return $this->setParameter('merchantCode', $value);
     }
 
-    public function getAuthenticationCode(): string
+    public function getAuthenticationCode(): ?string
     {
         return $this->getParameter('authenticationCode');
     }
@@ -54,7 +54,7 @@ class PurchaseRequest extends AbstractRequest
         return $this->setParameter('merchantData', $value);
     }
 
-    public function getMerchantReference(): string
+    public function getMerchantReference(): ?string
     {
         return $this->getParameter('merchantReference') ?: $this->getCombinedMerchantRef();
     }
@@ -115,17 +115,17 @@ class PurchaseRequest extends AbstractRequest
     /**
      * Data in reference field must not contain illegal characters
      */
-    protected function cleanField($field): string
+    protected function cleanField(string $field): string
     {
         return substr($field, 0, 12);
     }
 
-    public function send()
+    public function send(): RedirectResponseInterface
     {
         return $this->sendData($this->getData());
     }
 
-    public function sendData($data)
+    public function sendData($data): RedirectResponseInterface
     {
         $merchantCode = $this->getMerchantCode();
         $authenticationCode = $this->getAuthenticationCode();
