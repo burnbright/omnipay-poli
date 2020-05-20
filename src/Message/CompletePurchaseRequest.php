@@ -16,7 +16,7 @@ class CompletePurchaseRequest extends PurchaseRequest
     //protected $endpoint = "https://publicapi.apac.paywithpoli.com/api/Transaction/GetTransaction";
     protected $endpoint = 'https://poliapi.apac.paywithpoli.com/api/v2/Transaction/GetTransaction';
 
-    public function getData()
+    public function getData(): array
     {
         $this->validate(
             'merchantCode',
