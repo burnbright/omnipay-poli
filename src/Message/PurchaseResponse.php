@@ -7,6 +7,7 @@ use Omnipay\Common\Exception\InvalidResponseException;
 use Omnipay\Common\Message\AbstractResponse;
 use Omnipay\Common\Message\RedirectResponseInterface;
 use Omnipay\Common\Message\RequestInterface;
+use SimpleXMLElement;
 
 /**
  * Poli Response
