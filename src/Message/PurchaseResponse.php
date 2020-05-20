@@ -4,11 +4,11 @@ namespace Omnipay\Poli\Message;
 
 use DOMDocument;
 use Guzzle\Http\EntityBody;
-use SimpleXMLElement;
-use Omnipay\Common\Message\AbstractResponse;
-use Omnipay\Common\Message\RequestInterface;
 use Omnipay\Common\Exception\InvalidResponseException;
+use Omnipay\Common\Message\AbstractResponse;
 use Omnipay\Common\Message\RedirectResponseInterface;
+use Omnipay\Common\Message\RequestInterface;
+use SimpleXMLElement;
 
 /**
  * Poli Response
@@ -65,7 +65,7 @@ class PurchaseResponse extends AbstractResponse implements RedirectResponseInter
      */
     public function getMessage()
     {
-        return $this->data['ErrorMessage'];
+        return $this->data['ErrorMessage'] ?? $this->data['Message'] ?? null;
     }
 
     /**
@@ -75,7 +75,7 @@ class PurchaseResponse extends AbstractResponse implements RedirectResponseInter
      */
     public function getCode()
     {
-        return $this->data['ErrorCode'];
+        return $this->data['ErrorCode'] ?? null;
     }
 
     /**
