@@ -59,6 +59,7 @@ class FetchCheckoutRequest extends AbstractRequest
             $url,
             array(
                 'Content-Type' => 'application/json',
+                'Accept' => 'application/json',
                 'Authorization' => 'Basic ' . $auth,
             )
         );

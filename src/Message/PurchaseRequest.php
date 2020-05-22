@@ -138,6 +138,7 @@ class PurchaseRequest extends AbstractRequest
             $this->endpoint,
             array(
                 'Content-Type' => 'application/json',
+                'Accept' => 'application/json',
                 'Authorization' => 'Basic ' . $auth,
             ),
             $postdata
