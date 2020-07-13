@@ -2,11 +2,10 @@
 
 namespace Omnipay\Poli\Message;
 
-use Guzzle\Http\EntityBodyInterface;
-use Omnipay\Common\Message\AbstractResponse;
-use Omnipay\Common\Message\RequestInterface;
 use Omnipay\Common\Exception\InvalidResponseException;
+use Omnipay\Common\Message\AbstractResponse;
 use Omnipay\Common\Message\RedirectResponseInterface;
+use Omnipay\Common\Message\RequestInterface;
 
 /**
  * Poli Checkout Response
@@ -31,7 +30,7 @@ class FetchCheckoutResponse extends AbstractResponse implements RedirectResponse
      *
      * @return bool
      */
-    public function isSuccessful()
+    public function isSuccessful(): bool
     {
         return !$this->getCode();
     }
@@ -41,7 +40,7 @@ class FetchCheckoutResponse extends AbstractResponse implements RedirectResponse
      *
      * @return bool
      */
-    public function isRedirect()
+    public function isRedirect(): bool
     {
         return isset($this->data['NavigateURL']);
     }
@@ -51,9 +50,9 @@ class FetchCheckoutResponse extends AbstractResponse implements RedirectResponse
      *
      * @return string
      */
-    public function getMessage()
+    public function getMessage(): ?string
     {
-        return $this->data['ErrorMessage'];
+        return $this->data['ErrorMessage'] ?: null;
     }
 
     /**
@@ -61,9 +60,9 @@ class FetchCheckoutResponse extends AbstractResponse implements RedirectResponse
      *
      * @return int
      */
-    public function getCode()
+    public function getCode(): ?int
     {
-        return $this->data['ErrorCode'];
+        return $this->data['ErrorCode'] ?: null;
     }
 
     /**
@@ -71,11 +70,13 @@ class FetchCheckoutResponse extends AbstractResponse implements RedirectResponse
      *
      * @return string
      */
-    public function getRedirectUrl()
+    public function getRedirectUrl(): ?string
     {
         if ($this->isRedirect()) {
             return $this->data['NavigateURL'];
         }
+
+        return null;
     }
 
     /**
@@ -83,7 +84,7 @@ class FetchCheckoutResponse extends AbstractResponse implements RedirectResponse
      *
      * @return string
      */
-    public function getRedirectMethod()
+    public function getRedirectMethod(): string
     {
         return 'GET';
     }

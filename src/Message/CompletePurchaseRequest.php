@@ -3,8 +3,7 @@
 namespace Omnipay\Poli\Message;
 
 use Omnipay\Common\Exception\InvalidRequestException;
-use Omnipay\Common\Exception\InvalidResponseException;
-use SimpleXMLElement;
+use Omnipay\Common\Message\RedirectResponseInterface;
 
 /**
  * Poli Complete Purchase Request
@@ -13,10 +12,9 @@ use SimpleXMLElement;
  */
 class CompletePurchaseRequest extends PurchaseRequest
 {
-    //protected $endpoint = "https://publicapi.apac.paywithpoli.com/api/Transaction/GetTransaction";
     protected $endpoint = 'https://poliapi.apac.paywithpoli.com/api/v2/Transaction/GetTransaction';
 
-    public function getData()
+    public function getData(): array
     {
         $this->validate(
             'merchantCode',
@@ -43,26 +41,31 @@ class CompletePurchaseRequest extends PurchaseRequest
         return $data;
     }
 
-    public function send()
+    public function send(): RedirectResponseInterface
     {
         return $this->sendData($this->getData());
     }
 
-    public function sendData($data)
+    public function sendData($data): RedirectResponseInterface
     {
         $auth = base64_encode($this->getMerchantCode() . ':' . $this->getAuthenticationCode());
         $headers = [
             'Content-Type' => 'application/json',
+            'Accept' => 'application/json',
             'Authorization' => 'basic ' . $auth,
         ];
 
+        // The Official way to add query params(4th argument of request())
+        // does not seem to work, so appending to the endpoint uri as well.
+        $url = $this->endpoint . '?' . http_build_query($data);
+
         $httpResponse = $this->httpClient
-            ->request('get', $this->endpoint, $headers, http_build_query($data));
+            ->request('get', $url, $headers, http_build_query($data));
 
         return $this->response = new CompletePurchaseResponse($this, $httpResponse->getBody());
     }
 
-    public function getToken()
+    public function getToken(): ?string
     {
         return $this->getParameter('token');
     }
