@@ -13,6 +13,32 @@ class PurchaseRequestTest extends TestCase
         $this->request = new PurchaseRequest($this->getHttpClient(), $this->getHttpRequest());
     }
 
+    public function testFailureURL()
+    {
+        $params = array(
+            'amount' => '12.00',
+            'description' => 'Test Product',
+            'currency' => 'NZD',
+            'merchantCode' => 'ASDF',
+            'authenticationCode' => '1234',
+            'transactionId' => 123,
+            'returnUrl' => 'https://www.example.com/return',
+            'cancelUrl' => 'https://www.example.com/cancel',
+        );
+        $this->request->initialize($params);
+
+        // if failure URL is not provided, return return URL
+        $data = $this->request->getData();
+        $this->assertSame("https://www.example.com/return", $data['FailureURL']);
+        $this->assertSame(null, $this->request->getFailureURL());
+
+        // if failure URL is set, return what is set
+        $this->request->setFailureURL("https://www.fails.com");
+        $data = $this->request->getData();
+        $this->assertSame("https://www.fails.com", $data['FailureURL']);
+        $this->assertSame("https://www.fails.com", $this->request->getFailureURL());
+    }
+
     /**
      * check that MerchantRef outputs correctly, based on supplied params
      */
