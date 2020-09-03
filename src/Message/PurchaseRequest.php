@@ -59,6 +59,16 @@ class PurchaseRequest extends AbstractRequest
         return $this->getParameter('merchantReference') ?: $this->getCombinedMerchantRef();
     }
 
+    public function setFailureURL($value): self
+    {
+        return $this->setParameter('failureURL', $value);
+    }
+
+    public function getFailureURL(): ?string
+    {
+        return $this->getParameter('failureURL');
+    }
+
     public function setMerchantReference($value): self
     {
         return $this->setParameter('merchantReference', preg_replace([
@@ -90,7 +100,7 @@ class PurchaseRequest extends AbstractRequest
         $data['NotificationURL'] = $this->getNotifyUrl();
         $data['SuccessURL'] = $this->getReturnUrl();
         $data['Timeout'] = $this->getTimeout();
-        $data['FailureURL'] = $this->getReturnUrl();
+        $data['FailureURL'] = $this->getFailureURL() ?: $this->getReturnUrl();
         $data['UserIPAddress'] = $this->getClientIp();
 
         return $data;
