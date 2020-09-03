@@ -30,10 +30,13 @@ class PurchaseRequestTest extends TestCase
             );
         $this->request->initialize($params);
 
+        $this->request->setMerchantReference("MerchantRef");
+        $this->assertEquals("MerchantRef", $this->request->getMerchantReference());
+
         //no card means use standard form
         $this->assertEquals(123, $this->request->getCombinedMerchantRef());
         $data = $this->request->getData();
-        $this->assertEquals(123, $data['MerchantReference']);
+        $this->assertEquals("MerchantRef", $data['MerchantReference']);
         $this->assertEquals(1, $data['MerchantReferenceFormat']);
 
         //valid card uses combined form
