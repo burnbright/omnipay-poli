@@ -72,7 +72,7 @@ class PurchaseRequest extends AbstractRequest
     public function setMerchantReference($value): self
     {
         return $this->setParameter('merchantReference', preg_replace([
-            '/[\#@-_=:?\.\/]/',
+            '/[\#@\-_=:?\.\/]/',
             '/\s\s/'
         ], ' ', $value));
     }
