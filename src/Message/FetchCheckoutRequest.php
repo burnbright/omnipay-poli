@@ -47,7 +47,7 @@ class FetchCheckoutRequest extends AbstractRequest
 
     public function sendData($data): RedirectResponseInterface
     {
-        $token = $this->httpRequest->query->get('token');
+        $token = $this->getParameter('token');
         $url = $this->endpoint . '?token=' . urlencode($token);
 
         $merchantCode = $this->getMerchantCode();
