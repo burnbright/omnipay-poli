@@ -12,7 +12,7 @@ use Omnipay\Common\Message\RedirectResponseInterface;
  */
 class CompletePurchaseRequest extends PurchaseRequest
 {
-    protected $endpoint = 'https://poliapi.apac.paywithpoli.com/api/v2/Transaction/GetTransaction';
+    protected $endpoint = '/api/v2/Transaction/GetTransaction';
 
     public function getData(): array
     {
@@ -57,7 +57,7 @@ class CompletePurchaseRequest extends PurchaseRequest
 
         // The Official way to add query params(4th argument of request())
         // does not seem to work, so appending to the endpoint uri as well.
-        $url = $this->endpoint . '?' . http_build_query($data);
+        $url = $this->getEndpoint() . '?' . http_build_query($data);
 
         $httpResponse = $this->httpClient
             ->request('get', $url, $headers, http_build_query($data));
