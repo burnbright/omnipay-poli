@@ -17,6 +17,44 @@ class GatewayTest extends GatewayTestCase
         $this->gateway->setAuthenticationCode('a;sldkfjasdf;aladjs');
     }
 
+    public function testproductionMode()
+    {
+        $this->assertEquals(
+            "https://poliapi.apac.paywithpoli.com/api/v2/Transaction/Initiate",
+            $this->gateway->purchase()->getEndpoint()
+        );
+
+        $this->assertEquals(
+            "https://poliapi.apac.paywithpoli.com/api/v2/Transaction/GetTransaction",
+            $this->gateway->fetchCheckout()->getEndpoint()
+        );
+
+        $this->assertEquals(
+            "https://poliapi.apac.paywithpoli.com/api/v2/Transaction/GetTransaction",
+            $this->gateway->completePurchase()->getEndpoint()
+        );
+    }
+
+    public function testTestMode()
+    {
+        $this->gateway->setTestMode(true);
+
+        $this->assertEquals(
+            "https://poliapi.uat1.paywithpoli.com/api/v2/Transaction/Initiate",
+            $this->gateway->purchase()->getEndpoint()
+        );
+
+        $this->assertEquals(
+            "https://poliapi.uat1.paywithpoli.com/api/v2/Transaction/GetTransaction",
+            $this->gateway->fetchCheckout()->getEndpoint()
+        );
+
+        $this->assertEquals(
+            "https://poliapi.uat1.paywithpoli.com/api/v2/Transaction/GetTransaction",
+            $this->gateway->completePurchase()->getEndpoint()
+        );
+    }
+
     public function testPurchaseSuccess()
     {
         $this->setMockHttpResponse('PurchaseRequestSuccess.txt');

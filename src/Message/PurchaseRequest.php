@@ -2,8 +2,8 @@
 
 namespace Omnipay\Poli\Message;
 
-use Omnipay\Common\Message\AbstractRequest;
 use Omnipay\Common\Message\RedirectResponseInterface;
+use Omnipay\Poli\Message\AbstractRequest;
 
 /**
  * Poli Purchase Request
@@ -12,7 +12,7 @@ use Omnipay\Common\Message\RedirectResponseInterface;
  */
 class PurchaseRequest extends AbstractRequest
 {
-    protected $endpoint = 'https://poliapi.apac.paywithpoli.com/api/v2/Transaction/Initiate';
+    protected $endpoint = '/api/v2/Transaction/Initiate';
 
     public function getMerchantCode(): ?string
     {
@@ -145,7 +145,7 @@ class PurchaseRequest extends AbstractRequest
         $postdata = json_encode($data);
         $httpResponse = $this->httpClient->request(
             'post',
-            $this->endpoint,
+            $this->getEndpoint(),
             array(
                 'Content-Type' => 'application/json',
                 'Accept' => 'application/json',

@@ -2,12 +2,12 @@
 
 namespace Omnipay\Poli\Message;
 
-use Omnipay\Common\Message\AbstractRequest;
 use Omnipay\Common\Message\RedirectResponseInterface;
+use Omnipay\Poli\Message\AbstractRequest;
 
 class FetchCheckoutRequest extends AbstractRequest
 {
-    protected $endpoint = 'https://poliapi.apac.paywithpoli.com/api/v2/Transaction/GetTransaction';
+    protected $endpoint = '/api/v2/Transaction/GetTransaction';
 
     public function getMerchantCode(): ?string
     {
@@ -48,7 +48,7 @@ class FetchCheckoutRequest extends AbstractRequest
     public function sendData($data): RedirectResponseInterface
     {
         $token = $this->getParameter('token');
-        $url = $this->endpoint . '?token=' . urlencode($token);
+        $url = $this->getEndpoint() . '?token=' . urlencode($token);
 
         $merchantCode = $this->getMerchantCode();
         $authenticationCode = $this->getAuthenticationCode();
