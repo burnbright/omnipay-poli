@@ -63,7 +63,7 @@ class PurchaseResponse extends AbstractResponse implements RedirectResponseInter
      */
     public function getMessage(): string
     {
-        return $this->data['ErrorMessage'] ?? $this->data['Message'] ?? 'Something went wrong';
+        return $this->data['ErrorMessage'] ?? $this->data['Message'] ?? null;
     }
 
     /**
