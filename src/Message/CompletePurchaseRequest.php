@@ -60,7 +60,7 @@ class CompletePurchaseRequest extends PurchaseRequest
         $url = $this->getEndpoint() . '?' . http_build_query($data);
 
         $httpResponse = $this->httpClient
-            ->request('get', $url, $headers, http_build_query($data));
+            ->request('GET', $url, $headers, http_build_query($data));
 
         return $this->response = new CompletePurchaseResponse($this, $httpResponse->getBody());
     }

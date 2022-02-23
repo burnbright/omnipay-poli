@@ -144,7 +144,7 @@ class PurchaseRequest extends AbstractRequest
 
         $postdata = json_encode($data);
         $httpResponse = $this->httpClient->request(
-            'post',
+            'POST',
             $this->getEndpoint(),
             array(
                 'Content-Type' => 'application/json',
