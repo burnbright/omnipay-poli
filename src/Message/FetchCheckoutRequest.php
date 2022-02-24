@@ -55,7 +55,7 @@ class FetchCheckoutRequest extends AbstractRequest
         $auth = base64_encode($merchantCode . ":" . $authenticationCode); //'S61xxxxx:AuthCode123');
 
         $httpResponse = $this->httpClient->request(
-            'get',
+            'GET',
             $url,
             array(
                 'Content-Type' => 'application/json',
