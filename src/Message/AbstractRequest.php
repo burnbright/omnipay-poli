@@ -16,7 +16,7 @@ abstract class AbstractRequest extends OmnipayAbstractRequest
     public function getEndpoint(): string
     {
         if ($this->getTestMode()) {
-            return 'https://poliapi.uat1.paywithpoli.com/' . ltrim($this->endpoint, '/');
+            return 'https://poliapi.uat3.paywithpoli.com/' . ltrim($this->endpoint, '/');
         }
 
         return 'https://poliapi.apac.paywithpoli.com/' . ltrim($this->endpoint, '/');
