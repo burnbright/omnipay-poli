@@ -10,7 +10,7 @@ Developer Docs: http://www.polipaymentdeveloper.com/
 [![Total Downloads](https://poser.pugx.org/burnbright/omnipay-poli/d/total.png)](https://packagist.org/packages/burnbright/omnipay-poli)
 
 [Omnipay](https://github.com/omnipay/omnipay) is a framework agnostic, multi-gateway payment
-processing library for PHP 5.3+. This package implements Poli support for Omnipay.
+processing library for PHP 7.2+. This package implements Poli support for Omnipay.
 
 ## Installation
 
@@ -20,7 +20,7 @@ to your `composer.json` file:
 ```json
 {
     "require": {
-        "burnbright/omnipay-poli": "~2.0"
+        "burnbright/omnipay-poli": "~3.0"
     }
 }
 ```

@@ -7,8 +7,7 @@ use Omnipay\Tests\GatewayTestCase;
 
 class GatewayTest extends GatewayTestCase
 {
-
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
         $this->gateway = new Gateway($this->getHttpClient(), $this->getHttpRequest());
@@ -17,7 +16,7 @@ class GatewayTest extends GatewayTestCase
         $this->gateway->setAuthenticationCode('a;sldkfjasdf;aladjs');
     }
 
-    public function testproductionMode()
+    public function testproductionMode(): void
     {
         $this->assertEquals(
             "https://poliapi.apac.paywithpoli.com/api/v2/Transaction/Initiate",
@@ -40,17 +39,17 @@ class GatewayTest extends GatewayTestCase
         $this->gateway->setTestMode(true);
 
         $this->assertEquals(
-            "https://poliapi.uat1.paywithpoli.com/api/v2/Transaction/Initiate",
+            "https://poliapi.uat3.paywithpoli.com/api/v2/Transaction/Initiate",
             $this->gateway->purchase()->getEndpoint()
         );
 
         $this->assertEquals(
-            "https://poliapi.uat1.paywithpoli.com/api/v2/Transaction/GetTransaction",
+            "https://poliapi.uat3.paywithpoli.com/api/v2/Transaction/GetTransaction",
             $this->gateway->fetchCheckout()->getEndpoint()
         );
 
         $this->assertEquals(
-            "https://poliapi.uat1.paywithpoli.com/api/v2/Transaction/GetTransaction",
+            "https://poliapi.uat3.paywithpoli.com/api/v2/Transaction/GetTransaction",
             $this->gateway->completePurchase()->getEndpoint()
         );
     }
